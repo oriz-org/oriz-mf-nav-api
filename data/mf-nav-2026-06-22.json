@@ -1,0 +1,20 @@
+{
+  "source": "https://api.mfapi.in/mf",
+  "fetchedAt": "2026-06-22T10:39:13.232Z",
+  "date": "2026-06-22",
+  "count": 3,
+  "schemes": [
+    {
+      "code": 119551,
+      "name": "Axis Bluechip Fund - Direct Plan - Growth"
+    },
+    {
+      "code": 120503,
+      "name": "Mirae Asset Large Cap Fund - Direct Plan - Growth"
+    },
+    {
+      "code": 118989,
+      "name": "Parag Parikh Flexi Cap Fund - Direct Plan - Growth"
+    }
+  ]
+}

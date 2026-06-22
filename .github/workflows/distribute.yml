@@ -1,0 +1,16 @@
+name: distribute
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PWABuilder CLI (placeholder)
+        run: |
+          echo "[v0] PWABuilder packaging not yet wired."
+          echo "Would run: npx -y @pwabuilder/cli package https://mf-nav.api.oriz.in"
+          echo "Outputs: AAB (Android), MSIX (Windows), iOS Xcode project"

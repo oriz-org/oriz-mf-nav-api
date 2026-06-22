@@ -1,0 +1,80 @@
+---
+// docs/index.astro — minimal landing + playground for Oriz MF NAV API
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Oriz MF NAV API — daily Indian mutual fund snapshots</title>
+    <meta name="description" content="Daily Indian mutual fund NAV snapshots — clean JSON proxy of api.mfapi.in" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0b1020" />
+    <style>
+      :root { color-scheme: light dark; }
+      body { font: 16px/1.6 system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+      h1 { margin-bottom: 0.25rem; }
+      .credit { background: #fff8c5; border-left: 4px solid #d4a72c; padding: 0.75rem 1rem; border-radius: 4px; margin: 1rem 0; }
+      @media (prefers-color-scheme: dark) { .credit { background: #2d2a1a; color: #f0e8c8; } }
+      code, pre { background: rgba(127,127,127,0.12); border-radius: 4px; padding: 0.1em 0.3em; }
+      pre { padding: 0.75rem; overflow: auto; }
+      table { border-collapse: collapse; width: 100%; font-size: 14px; }
+      th, td { border-bottom: 1px solid rgba(127,127,127,0.3); padding: 0.35rem 0.5rem; text-align: left; }
+      .meta { color: #666; font-size: 14px; }
+      button { font: inherit; padding: 0.4rem 0.9rem; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <h1>Oriz MF NAV API</h1>
+    <p class="meta">Daily Indian mutual fund NAV snapshots — clean JSON, PWA-installable docs.</p>
+
+    <div class="credit">
+      <strong>Data source:</strong> This API proxies the free, open
+      <a href="https://api.mfapi.in/mf" rel="noopener">api.mfapi.in</a> (originally from
+      <a href="https://www.amfiindia.com" rel="noopener">AMFI India</a>). All credit for
+      collection and curation goes to them. We add cleaner shape + daily snapshot archival.
+    </div>
+
+    <h2>Endpoints</h2>
+    <ul>
+      <li><code>GET /data/latest.json</code> — most recent snapshot</li>
+      <li><code>GET /data/mf-nav-YYYY-MM-DD.json</code> — historical daily snapshot</li>
+    </ul>
+
+    <h2>Playground</h2>
+    <p><button id="load">Load latest.json</button> <span id="status" class="meta"></span></p>
+    <pre id="meta" hidden></pre>
+    <table id="tbl" hidden>
+      <thead><tr><th>Code</th><th>Scheme Name</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <script type="module">
+      const btn = document.getElementById("load");
+      const status = document.getElementById("status");
+      const meta = document.getElementById("meta");
+      const tbl = document.getElementById("tbl");
+      const tbody = tbl.querySelector("tbody");
+      btn.addEventListener("click", async () => {
+        status.textContent = "loading…";
+        try {
+          const r = await fetch("./data/latest.json");
+          const j = await r.json();
+          meta.textContent = `source: ${j.source}\nfetched: ${j.fetchedAt}\ndate:    ${j.date}\ncount:   ${j.count}`;
+          meta.hidden = false;
+          tbody.innerHTML = j.schemes.slice(0, 50).map(s =>
+            `<tr><td>${s.code}</td><td>${s.name}</td></tr>`).join("");
+          tbl.hidden = false;
+          status.textContent = `loaded ${j.count} schemes (showing first 50)`;
+        } catch (e) {
+          status.textContent = "error: " + e.message;
+        }
+      });
+    </script>
+
+    <footer style="margin-top:3rem;font-size:13px;color:#888">
+      MIT licensed · <a href="https://github.com/chirag127/oriz-mf-nav-api">source</a> ·
+      not investment advice
+    </footer>
+  </body>
+</html>

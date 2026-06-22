@@ -1,0 +1,12 @@
+{
+  "name": "oriz-mf-nav-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Daily Indian MF NAV snapshots, proxying api.mfapi.in",
+  "scripts": {
+    "scrape": "node scripts/scrape.mjs",
+    "dev": "echo 'static site — open docs/index.astro after build'"
+  },
+  "license": "MIT"
+}
